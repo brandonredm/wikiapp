@@ -29,10 +29,11 @@ mongoose.connect(
 mongoose.connection.on('error', err => console.log(err.message + ' is mongod not running?'))
 mongoose.connection.on('disconnected', () => console.log('mongo disconnected'))
 
-const fruits = ['apple', 'banana', 'pear'];
+const artistsController = require('./controllers/artist_controller.js')
+app.use('/artists', artistsController)
 
-app.get('/fruits/', (req, res) => {
-    res.send(fruits);
+app.get('/', (req, res) => {
+    res.redirect('/artists');
 });
 
 app.listen(5000, () => {

@@ -4,32 +4,32 @@ import './App.css';
 const axios = require('axios');
 class App extends React.Component {
    state = {
-        fruits: []
+        artists: []
   }
 
   componentDidMount = () => { //This is called when component mounts
 
-    this.getFruitsFromAPI()
+    this.getArtistsFromAPI()
 
   }
 
 
 // functions
-// set state.fruits with data returned from API
-  setFruitDataIntoAppState = (fruitdata) => {
+// set state.artists with data returned from API
+  setArtistDataIntoAppState = (artistdata) => {
     this.setState({
-      fruits: fruitdata
+      artists: artistdata
     })
     console.log(this.state)
   }
 
 
 // get data from localhost:5000/fruits
-getFruitsFromAPI = () => {
-  axios.get('http://localhost:5000/fruits')
+getArtistsFromAPI = () => {
+  axios.get('http://localhost:5000/artists')
   .then((response)=> {
     console.log('Response from backend', response)
-    this.setFruitDataIntoAppState(response.data)
+    this.setArtistDataIntoAppState(response.data)
   })
 }
 
