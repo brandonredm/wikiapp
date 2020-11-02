@@ -103,7 +103,7 @@ updateArtist = (event) => {
       </form>
       </details>
       <ul>
-      <h2 className="myFav">Muscians</h2>
+      <h2 className="myartists">Muscians</h2>
        {this.state.artists.map((musician, index) => {
          return(
            <div key={index}>
@@ -112,7 +112,7 @@ updateArtist = (event) => {
            <img className="Img"src={musician.image} alt={musician.name}/>
            <h3>{musician.name}</h3>
            <details>
-           <h4>Name: {musician.name}</h4>
+           <h4 className="jedi">Name: {musician.name}</h4>
            <h4>Label: {musician.label}</h4>
            <h4>Description: {musician.description}</h4>
            <h4>Notable Songs: {musician.notable_songs} </h4>
