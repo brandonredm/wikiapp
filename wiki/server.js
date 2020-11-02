@@ -36,6 +36,7 @@ app.get('/', (req, res) => {
     res.redirect('/artists');
 });
 
-app.listen(5000, () => {
+//local port is 5000
+app.listen(PORT, () => {
     console.log('listening');
 });
