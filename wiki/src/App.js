@@ -42,10 +42,8 @@ getArtistsFromAPI = () => {
 
 createArtist = (event) => {
   event.preventDefault()
-  axios.post('http://localhost:5000/artists', this.state).then(response => {
-    this.setState({
-      artists: response.data
-    })
+  axios.post('http://localhost:5000/artists', this.state.artist).then(response => {
+    this.getArtistsFromAPI()
   })
 }
 
@@ -82,6 +80,28 @@ updateArtist = (event) => {
 
     render() {
       return (
+      <>
+      <details>
+      <summary> add an artist</summary>
+      <form onSubmit={this.createArtist}>
+      <label htmlFor="image">Image: </label>
+      <input onChange={this.handleChange} type="text" id="image" />
+      <br />
+      <label htmlFor="name">Name: </label>
+      <input onChange={this.handleChange} type="text" id="name" />
+      <br />
+      <label htmlFor="label">Label: </label>
+      <input onChange={this.handleChange} type="text" id="label" />
+      <br />
+      <label htmlFor="description">Description: </label>
+      <input onChange={this.handleChange} type="text" id="description" />
+      <br />
+      <label htmlFor="notable_songs">Notable Songs: </label>
+      <input onChange={this.handleChange} type="text" id="notable_songs" />
+      <br />
+      <input className="submit"type="submit" value="Add Artist" />
+      </form>
+      </details>
       <ul>
       <h2 className="myFav">Muscians</h2>
        {this.state.artists.map((musician, index) => {
@@ -128,6 +148,7 @@ updateArtist = (event) => {
      </div>
    )})}
  </ul>
+ </>
   )
 }}
   export default App;
