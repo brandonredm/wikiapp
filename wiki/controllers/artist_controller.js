@@ -52,10 +52,14 @@ artists.delete('/:id', (req, res) => {
     if (error) {
       res.status(400).json({ error: error })
     }
-    res.status(200).json(deletedArtist)
+    Artist.find({}, (error, foundArtists) => {
+      if (error) {
+        res.status(400).json({ error: error })
+      }
+      res.status(200).json(foundArtists)
+    })
   })
 })
-
 artists.get('/*', (req, res) => {
   res.status(404).json({ error: 'page not found' })
 })

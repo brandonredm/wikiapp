@@ -1,10 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 const axios = require('axios');
+
 class App extends React.Component {
    state = {
-        artists: []
+        artists: [],
+          artist: {
+            name: '',
+            label: '',
+            image: '',
+            description: '',
+            notable_songs: ''
+          }
   }
 
   componentDidMount = () => { //This is called when component mounts
@@ -33,28 +40,94 @@ getArtistsFromAPI = () => {
   })
 }
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-
+createArtist = (event) => {
+  event.preventDefault()
+  axios.post('http://localhost:5000/artists', this.state).then(response => {
+    this.setState({
+      artists: response.data
+    })
+  })
 }
 
-export default App;
+deleteArtist = (event) => {
+  console.log(event.target)
+  axios.delete('http://localhost:5000/artists/' + event.target.id)
+  .then(response => this.setState(
+    {artists: response.data})
+  )
+}
+
+updateArtist = (event) => {
+  console.log(event.target)
+      event.preventDefault()
+      const id = event.target.id
+      axios
+      .put('http://localhost:5000/artists/' + id, this.state.artist)
+      .then(response => {
+        this.setState({
+          artist: response.data
+        })
+        this.getArtistsFromAPI()
+      })
+    }
+
+  handleChange = (event) => {
+    console.log(this.state)
+    const artist = this.state.artist;
+    artist[event.target.id] = event.target.value
+    this.setState({
+        artist
+    })
+  }
+
+    render() {
+      return (
+      <ul>
+      <h2 className="myFav">Muscians</h2>
+       {this.state.artists.map((musician, index) => {
+         return(
+           <div key={index}>
+            { (musician) ?
+           <aside className="musician">
+           <img className="Img"src={musician.image} alt={musician.name}/>
+           <h3>{musician.name}</h3>
+           <details>
+           <h4>Name: {musician.name}</h4>
+           <h4>Label: {musician.label}</h4>
+           <h4>Description: {musician.description}</h4>
+           <h4>Notable Songs: {musician.notable_songs} </h4>
+           <div className="edit">
+           <details>
+            <summary> Edit Artist</summary>
+            <form id={musician._id} onSubmit={this.updateArtist} >
+            <label htmlFor="image">Image: </label>
+            <input onChange={this.handleChange} type="text" id="image" />
+            <br />
+            <label htmlFor="name">Name: </label>
+            <input onChange={this.handleChange} type="text" id="name" />
+            <br />
+            <label htmlFor="label">Label: </label>
+            <input onChange={this.handleChange} type="text" id="label" />
+            <br />
+            <label htmlFor="description">Description: </label>
+            <input onChange={this.handleChange} type="text" id="description" />
+            <br />
+            <label htmlFor="notable_songs">Notable Songs: </label>
+            <input onChange={this.handleChange} type="text" id="notable_songs" />
+            <br />
+            <input className="submit"type="submit" value="Edit Artist" />
+      </form>
+      <button id ={musician._id}
+      onClick={this.deleteArtist}
+      >DELETE
+      </button>
+      </details>
+      </div>
+      </details>
+     </aside> : null}
+     </div>
+   )})}
+ </ul>
+  )
+}}
+  export default App;
