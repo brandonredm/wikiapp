@@ -4,7 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config()
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 5000
 const MONGODB_URI = process.env.MONGODB_URI
 app.use(express.json())
 
@@ -30,11 +30,21 @@ mongoose.connection.on('error', err => console.log(err.message + ' is mongod not
 mongoose.connection.on('disconnected', () => console.log('mongo disconnected'))
 
 const artistsController = require('./controllers/artist_controller.js')
-app.use('/artists', artistsController)
+app.use('/api/artists', artistsController)
 
-app.get('/', (req, res) => {
-    res.redirect('/artists');
-});
+// app.get('/', (req, res) => {
+//     res.redirect('/artists');
+// });
+
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  // Handle React routing, return all requests to React app
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
+
 
 //local port is 5000
 app.listen(PORT, () => {

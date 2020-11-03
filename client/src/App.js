@@ -33,7 +33,7 @@ class App extends React.Component {
 
 // get data from localhost:5000/fruits
 getArtistsFromAPI = () => {
-  axios.get('http://localhost:5000/artists')
+  axios.get('/api/artists')
   .then((response)=> {
     console.log('Response from backend', response)
     this.setArtistDataIntoAppState(response.data)
@@ -42,14 +42,14 @@ getArtistsFromAPI = () => {
 
 createArtist = (event) => {
   event.preventDefault()
-  axios.post('http://localhost:5000/artists', this.state.artist).then(response => {
+  axios.post('/api/artists', this.state.artist).then(response => {
     this.getArtistsFromAPI()
   })
 }
 
 deleteArtist = (event) => {
   console.log(event.target)
-  axios.delete('http://localhost:5000/artists/' + event.target.id)
+  axios.delete('/api/artists/' + event.target.id)
   .then(response => this.setState(
     {artists: response.data})
   )
@@ -60,7 +60,7 @@ updateArtist = (event) => {
       event.preventDefault()
       const id = event.target.id
       axios
-      .put('http://localhost:5000/artists/' + id, this.state.artist)
+      .put('/api/artists/' + id, this.state.artist)
       .then(response => {
         this.setState({
           artist: response.data
